@@ -1,15 +1,11 @@
 #+title: Chapter 1: A tour of computer systems
 
-
-* Table of content <x-color><param>#8b969e</param>:toc:</x-color>
-
+* Table of content :toc:
 [[#chapter-1-a-tour-of-computer-systems][Chapter 1: A tour of computer systems]]
   [[#11-information-is-bits--context][1.1 Information is bits + Context]]
   [[#programs-are-translated-by-other-programs-into-different-forms][Programs are translated by other programs into different forms]]
 
-
 * Chapter 1: A tour of computer systems
-
 * 1.1 Information is bits + Context
 
 The hello world program from K&R book will be the starting point.
@@ -48,14 +44,14 @@ The hello world program begins it's life as a high level C program, this is beca
 The translation form source code to object file in UNIX systems are done by something called a /compiler driver/.
 ~linux> gcc -o helloWorld main.c~
 In the above the gcc compiler will read our source file ~main.c~ and translate it to an executable object called ~helloWorld~. This translation can be represented by the figure bellow
-#+CAPTION: The compilation system</x-bg-color>
+#+CAPTION: The compilation system
 #+NAME: FIgure 1.3
 [[./imgs/figure1.3.png]]
 The whole process is done by four separate programs: the /preprocessor/, /compiler/, /assembler/ and /linker/, in that order. This collective process is called the compilation system.
 
 
 **** /Preprocessing phase/
-  The preprocessor (cpp) will make changes to the original program according to commands that begin with ~#~. For example the ~#include <stdio.h>~ command will instruct the preprocessor to read the contents of the system header file <x-color><param>#F99157</param>~stdio.h~</x-color> and insert it into the program text, resulting in a new program that typically has the ~.i suffix.
+  The preprocessor (cpp) will make changes to the original program according to commands that begin with ~#~. For example the ~#include <stdio.h>~ command will instruct the preprocessor to read the contents of the system header file ~stdio.h~ and insert it into the program text, resulting in a new program that typically has the ~.i suffix.
 **** /Compilation phase/
 
   The compiler (cc1) will translate ~helloWorld.i~ into ~helloWorld.s~. ~helloWorld.s~ will contain an assembly language program. This file wil contain a definition of main in assembly that could look like the below (depending on the machine and its architecture):
