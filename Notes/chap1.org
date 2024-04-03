@@ -2,8 +2,6 @@
 
 * Table of content :toc:
 [[#chapter-1-a-tour-of-computer-systems][Chapter 1: A tour of computer systems]]
-  [[#11-information-is-bits--context][1.1 Information is bits + Context]]
-  [[#programs-are-translated-by-other-programs-into-different-forms][Programs are translated by other programs into different forms]]
 
 * Chapter 1: A tour of computer systems
 * 1.1 Information is bits + Context
