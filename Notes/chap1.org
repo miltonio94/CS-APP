@@ -1,46 +1,37 @@
-Content-Type: text/enriched
-Text-Width: 80
+#+title: Chapter 1: A tour of computer systems
 
-#+title: <bold><x-color><param>#EC5f67</param>Chapter 1: A tour of computer systems
-
-</x-color></bold>
 
 * Table of content <x-color><param>#8b969e</param>:toc:</x-color>
 
-<x-color><param>#FAC863</param>-</x-color> <x-color><param>#FAC863</param>[[#chapter-1-a-tour-of-computer-systems][Chapter 1: A tour of computer systems]]</x-color>
-  <x-color><param>#FAC863</param>-</x-color> <x-color><param>#FAC863</param>[[#11-information-is-bits--context][1.1 Information is bits + Context]]</x-color>
-  <x-color><param>#FAC863</param>-</x-color> <x-color><param>#FAC863</param>[[#programs-are-translated-by-other-programs-into-different-forms][Programs </x-color><x-color><param>#FAC863</param>are translated</x-color><x-color><param>#FAC863</param> by other programs into different forms]]</x-color>
+[[#chapter-1-a-tour-of-computer-systems][Chapter 1: A tour of computer systems]]
+  [[#11-information-is-bits--context][1.1 Information is bits + Context]]
+  [[#programs-are-translated-by-other-programs-into-different-forms][Programs are translated by other programs into different forms]]
 
 
 * Chapter 1: A tour of computer systems
 
-<x-color><param>gray</param>*</x-color>* 1.1 Information is bits + Context
+* 1.1 Information is bits + Context
 
 The hello world program from K&R book will be the starting point.
 
-<x-bg-color><param>#14232D</param><x-color><param>#65737E</param>#+begin_src c
+#+begin_src c
+#include <<stdio.h>
 
-</x-color></x-bg-color><x-bg-color><param>#14232D</param>#include <<stdio.h>
-
-
-int main<x-color><param>#6699CC</param>()</x-color> <x-color><param>#6699CC</param>{</x-color>
-  printf<x-color><param>#E27E8D</param>(</x-color>"hello world\n"<x-color><param>#E27E8D</param>)</x-color>;
+int main(){
+  printf("hello world\n");
   return 0;
-<x-color><param>#6699CC</param>}</x-color>
-</x-bg-color><x-bg-color><param>#14232D</param>#+end_src
-</x-bg-color>Our program starts as a source file (or source program) that is created by the programmer with an editor and saved with the <x-color><param>#F99157</param>~.c~</x-color> extension. The code is a sequence of bits, each represented by either a 1 or a 0, organised in 8-bit chunks called bytes. Each one of these bytes represents a character in the program.
+}
+#+end_src
+Our program starts as a source file (or source program) that is created by the programmer with an editor and saved with the ~.c~ extension. The code is a sequence of bits, each represented by either a 1 or a 0, organised in 8-bit chunks called bytes. Each one of these bytes represents a character in the program.
 
 
 Most computers represent text character using the ASCII standards that represents each character as a unique byte-size integer. For example, here's our hello world program represented by ASCII.
 
-<x-color><param>#8b969e</param>#+CAPTION:</x-color> <x-bg-color><param>#14232D</param>The ASCI text representation of hello world</x-bg-color>
+#+CAPTION:The ASCI text representation of hello world
+#+NAME: Figure 1.2
+[[./imgs/figure1.2.png]]
 
-<x-color><param>#8b969e</param>#+NAME: FIgure 1.2</x-color>
-
-<x-color><param>#FAC863</param>[[./imgs/figure1.2.png]]</x-color>
-
-
-The hello world program is stored in a file as a sequence of bytes. Each byte represents a integer value that corresponds to a character. As an example the first character is stored as the value 35 which corresponds to the character <x-color><param>#F99157</param>~#~</x-color>. The second value is 105 which corresponds to the character <x-color><param>#F99157</param>~i~</x-color> and so on. One thing of note is that each line is terminated by the invisible character <x-color><param>#F99157</param>~</x-color><x-bg-color><param>#14232D</param><x-color><param>#C594C5</param>\n</x-color>~</x-bg-color> which is represented by the integer value 10. Files such as the one that stores our hello world program and that consist of ASCII characters are known as text files. All other files are known as binary files.
+The hello world program is stored in a file as a sequence of bytes. Each byte represents a integer value that corresponds to a character. As an example the first character is stored as the value 35 which corresponds to the character ~#~. The second value is 105 which corresponds to the character ~i~ and so on. One thing of note is that each line is terminated by the invisible character ~\n~ which is represented by the integer value 10. Files such as the one that stores our hello world program and that consist of ASCII characters are known as text files. All other files are known as binary files.
 
 
 The representation of our hello world program above illustrates a fundamental idea: All information in a system, this includes files, programs, data stored in memory, and data transferred across a network, are all represented as bits. The only thing that differentiates them is the context that they are viewed in. In one context the same sequence of bytes might represent a character string, in another an integer, or a floating point number or even a machine instruction.
@@ -49,54 +40,40 @@ The representation of our hello world program above illustrates a fundamental id
 Programmers need to understand machine representation of numbers because they are not the same as integers and real numbers. The are finite approximations that can behave in unexpected ways.
 
 
-<x-color><param>gray</param>*</x-color>* Programs are translated by other programs into different forms
+* Programs are translated by other programs into different forms
 
-The hello world program begins it's life as a high level C program, this is because it's human readable code. For the program to be able to run on a system, each individual statement must be translated into <italic>/machine-language/</italic> instructions. These instructions then need to be packaged into a <italic>/executable object program/</italic> and then stored as a binary. These object programs can also be referred to as an <italic>/executable object/</italic>
-
-
-The translation form source code to object file in UNIX systems are done by something called a <italic>/compiler driver/</italic>.
-
-<x-color><param>#F99157</param>~linux> gcc -o helloWorld main.c~</x-color>
-
-In the above the gcc compiler will read our source file <x-color><param>#F99157</param>~main.c~</x-color> and translate it to an executable object called <x-color><param>#F99157</param>~helloWorld~</x-color>. This translation can be represented by the figure bellow
-<x-color><param>#8b969e</param>#+CAPTION:</x-color> <x-bg-color><param>#14232D</param>The compilation system</x-bg-color>
-
-<x-color><param>#8b969e</param>#+NAME: FIgure 1.3</x-color>
-<x-color><param>#FAC863</param>[[./imgs/figure1.3.png]]</x-color>
-
-The whole process is done by four separate programs: the <italic>/preprocessor/</italic>, <italic>/compiler/</italic>, <italic>/assembler/</italic> and <italic>/linker/</italic>, in that order. This collective process is called the compilation system.
+The hello world program begins it's life as a high level C program, this is because it's human readable code. For the program to be able to run on a system, each individual statement must be translated into /machine-language/ instructions. These instructions then need to be packaged into a /executable object program/ and then stored as a binary. These object programs can also be referred to as an /executable object/.
 
 
-<x-color><param>gray</param>***</x-color>* <italic>/Preprocessing phase/</italic>
+The translation form source code to object file in UNIX systems are done by something called a /compiler driver/.
+~linux> gcc -o helloWorld main.c~
+In the above the gcc compiler will read our source file ~main.c~ and translate it to an executable object called ~helloWorld~. This translation can be represented by the figure bellow
+#+CAPTION: The compilation system</x-bg-color>
+#+NAME: FIgure 1.3
+[[./imgs/figure1.3.png]]
+The whole process is done by four separate programs: the /preprocessor/, /compiler/, /assembler/ and /linker/, in that order. This collective process is called the compilation system.
 
-  The preprocessor (cpp) will make changes to the original program according to commands that begin with <x-color><param>#F99157</param>~#~</x-color>. For example the <x-color><param>#F99157</param>~#include <<stdio.h>~</x-color> command will instruct the preprocessor to read the contents of the system header file <x-color><param>#F99157</param>~stdio.h~</x-color> and insert it into the program text, resulting in a new program that typically has the <x-color><param>#F99157</param>~.i~</x-color> suffix.
-<x-color><param>gray</param>***</x-color>* <italic>/Compilation phase/</italic>
 
-  The compiler (cc1) will translate <x-color><param>#F99157</param>~helloWorld.i~</x-color> insot <x-color><param>#F99157</param>~helloWorld.s~</x-color>. <x-color><param>#F99157</param>~helloWorld.s~</x-color> will contain an assembly language program. This file wil contain a definition of main in assembly that could look like the below (depending on the machine and its architecture):
+**** /Preprocessing phase/
+  The preprocessor (cpp) will make changes to the original program according to commands that begin with ~#~. For example the ~#include <stdio.h>~ command will instruct the preprocessor to read the contents of the system header file <x-color><param>#F99157</param>~stdio.h~</x-color> and insert it into the program text, resulting in a new program that typically has the ~.i suffix.
+**** /Compilation phase/
 
-<x-bg-color><param>#14232D</param><x-color><param>#65737E</param>  #+begin_src asm
+  The compiler (cc1) will translate ~helloWorld.i~ into ~helloWorld.s~. ~helloWorld.s~ will contain an assembly language program. This file wil contain a definition of main in assembly that could look like the below (depending on the machine and its architecture):
+#+begin_src asm
+    main:
+        subq $8, %rsp
+        movl $.LCO, %edi
+        call puts
+        movl $0, %eax
+        addq $8, %rsp
+        ret
+#+end_src
 
-</x-color></x-bg-color><x-bg-color><param>#14232D</param>    <x-color><param>#C594C5</param>main</x-color>:
-
-        <x-color><param>#C594C5</param>subq</x-color> $8, <x-color><param>#F99157</param>%rsp</x-color>
-
-        <x-color><param>#C594C5</param>movl</x-color> $.LCO, <x-color><param>#F99157</param>%edi</x-color>
-
-        <x-color><param>#C594C5</param>call</x-color> puts
-
-        <x-color><param>#C594C5</param>movl</x-color> $0, <x-color><param>#F99157</param>%eax</x-color>
-
-        <x-color><param>#C594C5</param>addq</x-color> $8, <x-color><param>#F99157</param>%rsp</x-color>
-
-        <x-color><param>#C594C5</param>ret</x-color>
-</x-bg-color><x-bg-color><param>#14232D</param>  #+end_src
-
-</x-bg-color>Each of the lines above correspond to low-level machine language instructions. Assembly language is useful as it serves as a targget for many comiled languages as a common output. For example, C and Fortrans compilers both generate files in the same assembly language.
-<x-color><param>gray</param>***</x-color>* <italic>/Linking phase/</italic>
-
-Our file makes use of code that is not present in our source program, for example the <x-color><param>#F99157</param>~printf~</x-color> function resides in a seperate precompiled object called <x-color><param>#F99157</param>~printf.o~</x-color>. This code must somehow be merged into our <x-color><param>#F99157</param>~helloWorld.o~</x-color> program, The linker (ld) is responsible for this merging step. The result then is our <x-color><param>#F99157</param>~helloWorld~</x-color> file that is an executable that is ready to be loaded into memory and executed by the system.
+Each of the lines above correspond to low-level machine language instructions. Assembly language is useful as it serves as a targget for many comiled languages as a common output. For example, C and Fortrans compilers both generate files in the same assembly language.
+**** /Linking phase/
+Our file makes use of code that is not present in our source program, for example the ~printf~ function resides in a seperate precompiled object called ~printf.o~. This code must somehow be merged into our ~helloWorld.o~ program, The linker (ld) is responsible for this merging step. The result then is our ~helloWorld~ file that is an executable that is ready to be loaded into memory and executed by the system.
 
 
 
 
-<x-color><param>#65737E</param>#  LocalWords:  preprocessor Preprocessing</x-color>
+#  LocalWords:  preprocessor Preprocessing
