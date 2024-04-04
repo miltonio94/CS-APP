@@ -4,6 +4,7 @@
 - [[#11-information-is-bits--context][1.1 Information is bits + Context]]
 - [[#12-programs-are-translated-by-other-programs-into-different-forms][1.2 Programs are translated by other programs into different forms]]
 - [[#13-it-pays-to-understand-how-compilation-systems-work][1.3 It pays to understand how compilation systems work]]
+- [[#14-processors-read-and-interpret-instructions-stored-in-memory][1.4 Processors read and interpret instructions stored in memory]]
 
 * 1.1 Information is bits + Context
 The hello world program from K&R book will be the starting point.
@@ -57,3 +58,8 @@ Each of the lines above correspond to low-level machine language instructions. A
 *** /Linking phase/
 Our file makes use of code that is not present in our source program, for example the ~printf~ function resides in a seperate precompiled object called ~printf.o~. This code must somehow be merged into our ~helloWorld.o~ program, The linker (ld) is responsible for this merging step. The result then is our ~helloWorld~ file that is an executable that is ready to be loaded into memory and executed by the system.
 * 1.3 It pays to understand how compilation systems work
+Some important reasons for understanding the compilation system are:
+- /Optimising program/. Knowing how some statements are faster then others and why. Knowing how structuring the code can impact the efficiency of the program.
+- /Understanding Link-time errors/. Why do they happen and how can they be fixed. Why does it happen only during runtime sometimes.
+- /Avoiding security holes/. Understanding why buffer overflow works and how it can lead to security flaws.
+* 1.4 Processors read and interpret instructions stored in memory
