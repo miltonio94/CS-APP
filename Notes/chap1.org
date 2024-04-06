@@ -5,6 +5,9 @@
 - [[#12-programs-are-translated-by-other-programs-into-different-forms][1.2 Programs are translated by other programs into different forms]]
 - [[#13-it-pays-to-understand-how-compilation-systems-work][1.3 It pays to understand how compilation systems work]]
 - [[#14-processors-read-and-interpret-instructions-stored-in-memory][1.4 Processors read and interpret instructions stored in memory]]
+  - [[#141-hardware-organisation-of-a-system][1.4.1 Hardware organisation of a system]]
+  - [[#142-running-the-hello-world-program][1.4.2 Running the hello world program]]
+- [[#15-caches-matter][1.5 Caches matter]]
 
 * 1.1 Information is bits + Context
 The hello world program from K&R book will be the starting point.
@@ -63,3 +66,44 @@ Some important reasons for understanding the compilation system are:
 - /Understanding Link-time errors/. Why do they happen and how can they be fixed. Why does it happen only during runtime sometimes.
 - /Avoiding security holes/. Understanding why buffer overflow works and how it can lead to security flaws.
 * 1.4 Processors read and interpret instructions stored in memory
+Now the hello our ~main.c~ source code has been translated by the compilation system into an executable object. To run it in an unix system we type the following in the shell (a program in of it self)
+#+begin_src
+>>> ./helloWorld
+hello world
+>>>
+#+end_src
+** 1.4.1 Hardware organisation of a system
+The following illustration will help understand the typical organisation of a system
+#+CAPTION: Hardware organisation of a typical system
+#+NAME: FIgure 1.4
+[[./imgs/figure1.4.png]]
+*** Buses
+Buses are a collection of electrical conduits that carry bytes of information back and forth between components. Buses are designed to transfer fixed-sized chunks of bytes called /words/. The /word size/ (the number of bytes a word contains) is system dependent and known as a system parameter. Most machines now have a word size of either 4 bytes (on 32 bit machines) or 8 bytes (on 64 bit machines).
+*** I/O Devices
+Input/output (I/O) devices are the systems connections to the external world. In the example above it's the mouse, keyboard, display and disk.
+The I/O devices are connected to the I/O bus by either a /controller/ or an /adaptor/. The main difference between a controller and an adaptor is how it's packaged. A controller is a chip in either the device itself or on the systems main printed circuit board (usually called a motherboard). An adaptor is a card that is plugged into a slot on the motherboard.
+*** Main memory
+The main memory is a temporary storage device that holds programs and the data that they manipulate. Main memory consists of a collection /dynamic random access memory/ (DRAM) chips. Memory is organised as a linear array of bytes. Each byte has it's own unique address (an array index) starting from zero. Generally, each machine instructions that makes a program may have any number of bytes. The sizes of data of a C program vary depending on their type. For example on a typical x86-64 machine running linux the types int and float are four bytes long.
+*** Processor
+The /central processing unit/ (CPU), also known as the processor is what interprets (/executes/) instructions stored in memory. It contains a word sized storage device at it's core known as the /program counter/ (PC.) The program counter will point to (contains the address of) some machine instruction in main memory.
+
+From the point that the system is powered on to the point it is powered off the programmer processor will execute instructions that are pointed at by the program counter and will update the program counter to point to the next instruction. A processors instruction execution model is defined by it's /instruction set architecture/. The sequence described by the model is the following:
+Read instruction from memory that is pointed at by the program counter -> Interpret the bits in the instruction -> Perform simple operation represented by instruction -> Update the program counter to point to next instruction
+These instructions in memory may or may not be contiguous.
+
+The number of operations are limited and revolve around main memory, the /register file/, and the /arithmetic/logic unit/ (ALU). Th register file is a small storage device made up of a collection of word sized register, each of these registers have a unique name. The arithmetic/logic unit computes new data and address values. Some examples of these simple operations are:
+- Load: Copy a byte or word from memory into a register and overwrite it's previous contents
+- Store: Copy a byte or word from a register and store it in memory overwriting it's previous content
+- Operate: Copy the contents of two registers to the arithmetic/logic unit, perform arithmetic operation on them and store the result in a register overwriting it's previous content.
+- Jump: Extract a word from the instruction and copy into the program counter overwriting the program counter's previous content.
+
+In reality the process in much more complicated than this. Modern processors use complicated mechanisms to speed up the execution. A distinction has to be made between a processor's instruction set architecture and it's /microarchitecture/. The processor instruction set architecture describes the effect of each machine code instruction, the microarchitecture describes how the processor is actually made.
+** 1.4.2 Running the hello world program
+Now we understand that when a user types into the shell the command to run the program the shell loads the executable files via a series of instructions that copies the program's code and data from disk to main memory. The data of the program includes  the string of characters ~hello world\n~ that will be printed out.
+
+/Direct memory access/ is a technique that allows for the system to pass data from disk to memory  without having to pass through the processor.
+
+When the code and data are present in memory the processor will begin to execute the machine instruction of the program' ~main~ routine. The instructions will copy the bytes in the ~hello world\n~ string from memory to the register file and then from there to the display device where the user will then be able to see it.
+Here's a figure outlining this process
+[[./imgs/figure1.5.png]]
+* 1.5 Caches matter
