@@ -8,6 +8,7 @@
   - [[#141-hardware-organisation-of-a-system][1.4.1 Hardware organisation of a system]]
   - [[#142-running-the-hello-world-program][1.4.2 Running the hello world program]]
 - [[#15-caches-matter][1.5 Caches matter]]
+- [[#16-storage-devices-form-a-hierarchy][1.6 Storage devices form a hierarchy]]
 
 * 1.1 Information is bits + Context
 The hello world program from K&R book will be the starting point.
@@ -105,5 +106,23 @@ Now we understand that when a user types into the shell the command to run the p
 
 When the code and data are present in memory the processor will begin to execute the machine instruction of the program' ~main~ routine. The instructions will copy the bytes in the ~hello world\n~ string from memory to the register file and then from there to the display device where the user will then be able to see it.
 Here's a figure outlining this process
+#+CAPTION: Reading the hello command from the keyboard
+#+NAME: FIgure 1.5
 [[./imgs/figure1.5.png]]
+#+CAPTION: Loading the executable from disk into main memory
+#+NAME: FIgure 1.6
+[[./imgs/figure1.6.png]]
+#+CAPTION: Writing the output string from memory to the display
+#+NAME: FIgure 1.7
+[[./imgs/figure1.7.png]]
 * 1.5 Caches matter
+Systems spend a lot of time moving memory around. Instructions for a program are stored on disk memory along with their data. The program and it's data needs to move to main memory and from there it needs to move into the processor so that it can execute it and the data needs to move from memory to the display device. Much of this process gets in the way of the processor doing the real work it needs to do. Due to this system designers have a big concern to make these copying operations faster.
+
+Because of physics, larger storage devices are slower then smaller ones, and the faster storage are cheaper to make then the smaller counterparts. A systems storage device might be 1000 times larger then main memory but might also be 10000 slower to access. But a processor might be able to read data from a register 100 times faster then main memory. This is called the /processor-memory/ gap and it's being getting worse as improvements to semiconductor tech have been made.
+
+A solution to this problem has been the introduction of /cache memories/. These are storage devices that are much smaller but also much faster then any other storage device on the system. They serve as momentary staging areas for information that the processor are likely to need.
+#+CAPTION: Cache memory
+#+NAME: FIgure 1.8
+[[./imgs/figure1.8.png]]
+An L1 cache on the processor can be accessed nearly as fast as a register can and can hold ten of thousands of bytes. A larger L2 cache can hold hundreds of thousands to millions bytes and can be 5 times slower then L1 cache. L2 memory is connected to the processor via a special bus. Even though it can take longer to access  then L1 cache it's still much faster then having to reach out to main memory. L1 and L2 caches are implemented using a technology called /static random access memory/ (SRAM). You can even find L3 cache in some models. The idea of this innovation is that systems can take advantage of very large memory and very fast memory by exploiting locality.
+* 1.6 Storage devices form a hierarchy
