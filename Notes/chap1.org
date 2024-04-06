@@ -9,6 +9,7 @@
   - [[#142-running-the-hello-world-program][1.4.2 Running the hello world program]]
 - [[#15-caches-matter][1.5 Caches matter]]
 - [[#16-storage-devices-form-a-hierarchy][1.6 Storage devices form a hierarchy]]
+- [[#17-the-operating-system-manages-the-hardware][1.7 The operating system manages the hardware]]
 
 * 1.1 Information is bits + Context
 The hello world program from K&R book will be the starting point.
@@ -126,3 +127,11 @@ A solution to this problem has been the introduction of /cache memories/. These 
 [[./imgs/figure1.8.png]]
 An L1 cache on the processor can be accessed nearly as fast as a register can and can hold ten of thousands of bytes. A larger L2 cache can hold hundreds of thousands to millions bytes and can be 5 times slower then L1 cache. L2 memory is connected to the processor via a special bus. Even though it can take longer to access  then L1 cache it's still much faster then having to reach out to main memory. L1 and L2 caches are implemented using a technology called /static random access memory/ (SRAM). You can even find L3 cache in some models. The idea of this innovation is that systems can take advantage of very large memory and very fast memory by exploiting locality.
 * 1.6 Storage devices form a hierarchy
+This idea of having smaller and faster memory between the processor and larger and slower memory is a general one. This creates a hierarchy of memory in systems, with smaller but faster memory at the top and slower and larger at the bottom.
+#+CAPTION: An example of a memory hierarchy
+#+NAME: FIgure 1.9
+[[./imgs/figure1.9.png]]
+Registers occupy the top level of this hierarchy and is known as level 0 or L0.
+
+This memory hierarchy serves as a way to cache memory for the next level. So main memory serves as a cache for disk storage, L3 serves as a cache for L2, L2 serves as a cache for L1.
+* 1.7 The operating system manages the hardware
