@@ -177,6 +177,9 @@ Gene Amdahl, a pioneer in the early days of computing, made an observation about
 
 $$
 T_{new} = (1 - \alpha) + \alpha T_{old}∕k
+$$
+
+$$
 = T_{old} [(1 - \alpha) + \alpha∕k]
 $$
 
