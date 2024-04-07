@@ -174,10 +174,12 @@ Most modern operating systems are often linked to other systems by networks. Fro
 * 1.9 Important themes
 ** Amdahl's law
 Gene Amdahl, a pioneer in the early days of computing, made an observation about the effectiveness of improving performance of one part of the system, this observation is called Amdahl's law. It states that when you speed up one part of a system the effect on the overall system performance depends on how significant this part was and how much it was sped up. Lets say we have a program that takes T_{old} time to execute. Then lets say some part of the system requires a fraction \alpha of this time and we improve it's performance by a factor of k. That is the component originally required time $\alpha T_{old}$, and now it requires $\alpha T_{old}∕k$. The overall execution time would then be
+
 $$
 T_{new} = (1 - \alpha) + \alpha T_{old}∕k
 = T_{old} [(1 - \alpha) + \alpha∕k]
 $$
+
 From this we can compute the speedup S = 𝑇_{old}/𝑇_{new} as
 
 $$
