@@ -10,6 +10,11 @@
 - [[#15-caches-matter][1.5 Caches matter]]
 - [[#16-storage-devices-form-a-hierarchy][1.6 Storage devices form a hierarchy]]
 - [[#17-the-operating-system-manages-the-hardware][1.7 The operating system manages the hardware]]
+  - [[#171-processes][1.7.1 Processes]]
+  - [[#172-threads][1.7.2 Threads]]
+  - [[#173-virtual-memory][1.7.3 Virtual memory]]
+  - [[#174-files][1.7.4 Files]]
+- [[#18-systems-communicate-with-other-systems-using-networks][1.8 Systems communicate with other systems using networks]]
 
 * 1.1 Information is bits + Context
 The hello world program from K&R book will be the starting point.
@@ -59,7 +64,7 @@ The whole process is done by four separate programs: the /preprocessor/, /compil
         ret
 #+end_src
 
-Each of the lines above correspond to low-level machine language instructions. Assembly language is useful as it serves as a targget for many comiled languages as a common output. For example, C and Fortrans compilers both generate files in the same assembly language.
+Each of the lines above correspond to low-level machine language instructions. Assembly language is useful as it serves as a targget for many comiled languages as a common output. For example, C and Fortran compilers both generate files in the same assembly language.
 *** /Linking phase/
 Our file makes use of code that is not present in our source program, for example the ~printf~ function resides in a seperate precompiled object called ~printf.o~. This code must somehow be merged into our ~helloWorld.o~ program, The linker (ld) is responsible for this merging step. The result then is our ~helloWorld~ file that is an executable that is ready to be loaded into memory and executed by the system.
 * 1.3 It pays to understand how compilation systems work
@@ -135,3 +140,41 @@ Registers occupy the top level of this hierarchy and is known as level 0 or L0.
 
 This memory hierarchy serves as a way to cache memory for the next level. So main memory serves as a cache for disk storage, L3 serves as a cache for L2, L2 serves as a cache for L1.
 * 1.7 The operating system manages the hardware
+In the ~helloWorld~ program, when users load our program using the shell and it prints the it's message neither of these two programs accessed any of the hardware involved (keyboard, display, disk or main memory). This is done by the operating system. The operating system can be thought of as a layer of software  in between the application program and the hardware.
+#+CAPTION: An example of a memory hierarchy
+#+NAME: FIgure 1.10
+[[./imgs/figure1.10.png]]
+Any attempt to by a program to manipulate the hardware must go through the operating system.
+
+The operating system two primary purpose is to prevent run away programs form misusing the hardware and to provide applications simple and uniform ways to access and manipulate the hardware which often vary. The operating system achieves this by a fundamental abstraction of /processes/, /virtual memory/ and /files/.
+#+CAPTION: Abstraction provided by an operating system
+#+NAME: FIgure 1.11
+[[./imgs/figure1.11.png]]
+Files are an abstraction for input/output devices. Virtual memory is an abstraction for disk storage and main memory. Processes are an abstraction for processor, main memory and input/output devices.
+** 1.7.1 Processes
+When a program is running in a system the operating system gives the illusion that it is the only program running. It gives the illusion that the program is the only one with access to processor, main memory and I/O devices. There's an illusion that the program is the only thing being executed by the processor without interruption and only it's the only object within main memory. This is the abstraction called a process.
+
+With this idea of a process programs can run concurrently while having the illusion of having exclusive use of the hardware. In most system there are more processes that need to be run then there are processor and so in reality, this notion of /concurrency/ is more like interleaving of many processes instructions.
+Originally  systems could only execute one program at a time, while /multi-core/ processors can appear to execute multiple processes at the same time by having the processor switch between them. Weather it's a multi-core computer or not systems can appear to be executing multiple programs by interleaving instructions, this is called /context switching/. The model of a /uniprocessor system/ is much simpler so it's the model used to describe concepts for now.
+
+The OS keeps track of all the state a process needs, this state is called the /context/. The context contains the current values of the program counter, the register file and the contents of main memory. When the operating systems decides to transfer the control of one process to another it performs a /context switch/, it saves the context of the currently running program, restores the context of the next process it will run and passes the control to the next process.
+#+CAPTION: Process context switching
+#+NAME: FIgure 1.12
+[[./imgs/figure1.12.png]]
+The transition of one process to another is performed by the OS /kernel/. The kernel is the portion of the OS that always in memory. Applications can then execute special /system call/ instructions that will transfer execution to the kernel to perform some task and then returns back to the application. The kernel is not a separate process, it is a collection of code and data structures that the system uses to manage all the processes.
+** 1.7.2 Threads
+In modern systems a process can consist of multiple execution units, /threads/, each running in the context of the same process and sharing the same code and global  data.
+** 1.7.3 Virtual memory
+Virtual memory is the abstraction that gives processes the illusion that they have exclusive access to main memory. Every process has the same view of memory know as the /virtual address space/
+#+CAPTION: Process virtual address space (not drawn to scale)
+#+NAME: FIgure 1.13
+[[./imgs/figure1.13.png]]
+The virtual address space seen by each process consists of well defined areas, each with a specific purpose:
+- /Program code and data/: Code begins at the same fixed address for all processes, followed by data locations that corresponds to global C variables.
+- Heap: The /runtime heap/ area is an area that can expand and contract dynamically during the run time. This expansion and contraction is the outcome of running routines such as ~malloc~ and ~free~.
+- Shared library: Space that holds data and code for shared libraries, like the C standard library and the mach library.
+- Stack: The /user stack/ is used by the compiler to implement function calls. The stack can also grow and shrink like the heap, but it grows when a function is called and shrinks when a function returns.
+- Kernel virtual memory: An address space reserved by the kernel. Processes can't read nor write to this space, it can't call functions in this space either. Process must invoke the kernel to perform these operations.
+** 1.7.4 Files
+Files are a sequence of bytes. Every I/O operation are modelled as a file. We can access input and output by reading and writting files using a set of system calls known as /Unix I/O/.
+* 1.8 Systems communicate with other systems using networks
