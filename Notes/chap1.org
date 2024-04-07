@@ -15,6 +15,8 @@
   - [[#173-virtual-memory][1.7.3 Virtual memory]]
   - [[#174-files][1.7.4 Files]]
 - [[#18-systems-communicate-with-other-systems-using-networks][1.8 Systems communicate with other systems using networks]]
+- [[#19-important-themes][1.9 Important themes]]
+  - [[#amdahls-law][Amdahl's law]]
 
 * 1.1 Information is bits + Context
 The hello world program from K&R book will be the starting point.
@@ -31,7 +33,6 @@ Our program starts as a source file (or source program) that is created by the p
 Most computers represent text character using the ASCII standards that represents each character as a unique byte-size integer. For example, here's our hello world program represented by ASCII.
 
 #+CAPTION:The ASCI text representation of hello world
-#+NAME: Figure 1.2
 [[./imgs/figure1.2.png]]
 
 The hello world program is stored in a file as a sequence of bytes. Each byte represents a integer value that corresponds to a character. As an example the first character is stored as the value 35 which corresponds to the character ~#~. The second value is 105 which corresponds to the character ~i~ and so on. One thing of note is that each line is terminated by the invisible character ~\n~ which is represented by the integer value 10. Files such as the one that stores our hello world program and that consist of ASCII characters are known as text files. All other files are known as binary files.
@@ -46,7 +47,6 @@ The translation form source code to object file in UNIX systems are done by some
 ~linux> gcc -o helloWorld main.c~
 In the above the gcc compiler will read our source file ~main.c~ and translate it to an executable object called ~helloWorld~. This translation can be represented by the figure bellow
 #+CAPTION: The compilation system
-#+NAME: FIgure 1.3
 [[./imgs/figure1.3.png]]
 The whole process is done by four separate programs: the /preprocessor/, /compiler/, /assembler/ and /linker/, in that order. This collective process is called the compilation system.
 *** /Preprocessing phase/
@@ -82,7 +82,6 @@ hello world
 ** 1.4.1 Hardware organisation of a system
 The following illustration will help understand the typical organisation of a system
 #+CAPTION: Hardware organisation of a typical system
-#+NAME: FIgure 1.4
 [[./imgs/figure1.4.png]]
 *** Buses
 Buses are a collection of electrical conduits that carry bytes of information back and forth between components. Buses are designed to transfer fixed-sized chunks of bytes called /words/. The /word size/ (the number of bytes a word contains) is system dependent and known as a system parameter. Most machines now have a word size of either 4 bytes (on 32 bit machines) or 8 bytes (on 64 bit machines).
@@ -113,13 +112,10 @@ Now we understand that when a user types into the shell the command to run the p
 When the code and data are present in memory the processor will begin to execute the machine instruction of the program' ~main~ routine. The instructions will copy the bytes in the ~hello world\n~ string from memory to the register file and then from there to the display device where the user will then be able to see it.
 Here's a figure outlining this process
 #+CAPTION: Reading the hello command from the keyboard
-#+NAME: FIgure 1.5
 [[./imgs/figure1.5.png]]
 #+CAPTION: Loading the executable from disk into main memory
-#+NAME: FIgure 1.6
 [[./imgs/figure1.6.png]]
 #+CAPTION: Writing the output string from memory to the display
-#+NAME: FIgure 1.7
 [[./imgs/figure1.7.png]]
 * 1.5 Caches matter
 Systems spend a lot of time moving memory around. Instructions for a program are stored on disk memory along with their data. The program and it's data needs to move to main memory and from there it needs to move into the processor so that it can execute it and the data needs to move from memory to the display device. Much of this process gets in the way of the processor doing the real work it needs to do. Due to this system designers have a big concern to make these copying operations faster.
@@ -128,13 +124,11 @@ Because of physics, larger storage devices are slower then smaller ones, and the
 
 A solution to this problem has been the introduction of /cache memories/. These are storage devices that are much smaller but also much faster then any other storage device on the system. They serve as momentary staging areas for information that the processor are likely to need.
 #+CAPTION: Cache memory
-#+NAME: FIgure 1.8
 [[./imgs/figure1.8.png]]
 An L1 cache on the processor can be accessed nearly as fast as a register can and can hold ten of thousands of bytes. A larger L2 cache can hold hundreds of thousands to millions bytes and can be 5 times slower then L1 cache. L2 memory is connected to the processor via a special bus. Even though it can take longer to access  then L1 cache it's still much faster then having to reach out to main memory. L1 and L2 caches are implemented using a technology called /static random access memory/ (SRAM). You can even find L3 cache in some models. The idea of this innovation is that systems can take advantage of very large memory and very fast memory by exploiting locality.
 * 1.6 Storage devices form a hierarchy
 This idea of having smaller and faster memory between the processor and larger and slower memory is a general one. This creates a hierarchy of memory in systems, with smaller but faster memory at the top and slower and larger at the bottom.
 #+CAPTION: An example of a memory hierarchy
-#+NAME: FIgure 1.9
 [[./imgs/figure1.9.png]]
 Registers occupy the top level of this hierarchy and is known as level 0 or L0.
 
@@ -142,13 +136,11 @@ This memory hierarchy serves as a way to cache memory for the next level. So mai
 * 1.7 The operating system manages the hardware
 In the ~helloWorld~ program, when users load our program using the shell and it prints the it's message neither of these two programs accessed any of the hardware involved (keyboard, display, disk or main memory). This is done by the operating system. The operating system can be thought of as a layer of software  in between the application program and the hardware.
 #+CAPTION: An example of a memory hierarchy
-#+NAME: FIgure 1.10
 [[./imgs/figure1.10.png]]
 Any attempt to by a program to manipulate the hardware must go through the operating system.
 
 The operating system two primary purpose is to prevent run away programs form misusing the hardware and to provide applications simple and uniform ways to access and manipulate the hardware which often vary. The operating system achieves this by a fundamental abstraction of /processes/, /virtual memory/ and /files/.
 #+CAPTION: Abstraction provided by an operating system
-#+NAME: FIgure 1.11
 [[./imgs/figure1.11.png]]
 Files are an abstraction for input/output devices. Virtual memory is an abstraction for disk storage and main memory. Processes are an abstraction for processor, main memory and input/output devices.
 ** 1.7.1 Processes
@@ -159,7 +151,6 @@ Originally  systems could only execute one program at a time, while /multi-core/
 
 The OS keeps track of all the state a process needs, this state is called the /context/. The context contains the current values of the program counter, the register file and the contents of main memory. When the operating systems decides to transfer the control of one process to another it performs a /context switch/, it saves the context of the currently running program, restores the context of the next process it will run and passes the control to the next process.
 #+CAPTION: Process context switching
-#+NAME: FIgure 1.12
 [[./imgs/figure1.12.png]]
 The transition of one process to another is performed by the OS /kernel/. The kernel is the portion of the OS that always in memory. Applications can then execute special /system call/ instructions that will transfer execution to the kernel to perform some task and then returns back to the application. The kernel is not a separate process, it is a collection of code and data structures that the system uses to manage all the processes.
 ** 1.7.2 Threads
@@ -167,7 +158,6 @@ In modern systems a process can consist of multiple execution units, /threads/, 
 ** 1.7.3 Virtual memory
 Virtual memory is the abstraction that gives processes the illusion that they have exclusive access to main memory. Every process has the same view of memory know as the /virtual address space/
 #+CAPTION: Process virtual address space (not drawn to scale)
-#+NAME: FIgure 1.13
 [[./imgs/figure1.13.png]]
 The virtual address space seen by each process consists of well defined areas, each with a specific purpose:
 - /Program code and data/: Code begins at the same fixed address for all processes, followed by data locations that corresponds to global C variables.
@@ -176,5 +166,21 @@ The virtual address space seen by each process consists of well defined areas, e
 - Stack: The /user stack/ is used by the compiler to implement function calls. The stack can also grow and shrink like the heap, but it grows when a function is called and shrinks when a function returns.
 - Kernel virtual memory: An address space reserved by the kernel. Processes can't read nor write to this space, it can't call functions in this space either. Process must invoke the kernel to perform these operations.
 ** 1.7.4 Files
-Files are a sequence of bytes. Every I/O operation are modelled as a file. We can access input and output by reading and writting files using a set of system calls known as /Unix I/O/.
+Files are a sequence of bytes. Every I/O operation are modelled as a file. We can access input and output by reading and writing files using a set of system calls known as /Unix I/O/.
 * 1.8 Systems communicate with other systems using networks
+Most modern operating systems are often linked to other systems by networks. From the point of view of a system the network can also be viewed as another I/O device.
+#+CAPTION: A network is another I/O device
+[[./imgs/figure1.14.png]]
+* 1.9 Important themes
+** Amdahl's law
+Gene Amdahl, a pioneer in the early days of computing, made an observation about the effectiveness of improving performance of one part of the system, this observation is called Amdahl's law. It states that when you speed up one part of a system the effect on the overall system performance depends on how significant this part was and how much it was sped up. Lets say we have a program that takes T_{old} time to execute. Then lets say some part of the system requires a fraction \alpha of this time and we improve it's performance by a factor of k. That is the component originally required time $\alpha T_{old}$, and now it requires $\alpha T_{old}∕k$. The overall execution time would then be
+$$
+T_{new} = (1 - \alpha) + \alpha T_{old}∕k
+= T_{old} [(1 - \alpha) + \alpha∕k]
+$$
+From this we can compute the speedup S = 𝑇_{old}/𝑇_{new} as
+
+$$
+                S = \frac{1}{(1-\alpha) + \alpha/k}
+$$
+
