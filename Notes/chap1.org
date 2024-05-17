@@ -1,4 +1,5 @@
 #+title: Chapter 1: A tour of computer systems
+#+AUTHOR: Milton
 
 * Table of content :toc:
 - [[#11-information-is-bits--context][1.1 Information is bits + Context]]
@@ -18,6 +19,7 @@
 - [[#19-important-themes][1.9 Important themes]]
   - [[#191-amdahls-law][1.9.1 Amdahl's law]]
   - [[#192-concurrency-and-parallelism][1.9.2 Concurrency and parallelism]]
+  - [[#193-the-importance-of-abstractions-in-computer-system][1.9.3 The importance of abstractions in computer system]]
 
 * 1.1 Information is bits + Context
 The hello world program from K&R book will be the starting point.
@@ -214,3 +216,5 @@ Modern processors can also execute multiple instructions at one time, this is kn
 Processors that can keep executing faster then one instruction per cycle are know as /superscalar/ processors.
 *** Single instruction, multiple-data (SIMD) parallelism
 Processors now have specialized hardware to allow multiple operations to be performed in parallel. This is know as /single instruction, multiple data/ (SIMD) parallelism.
+** 1.9.3 The importance of abstractions in computer system
+Abstraction is a very important concept in computing, we use abstractions everywhere. Abstractions such as the ones describes thus far allows programmers to have simpler views of complicated concepts.
