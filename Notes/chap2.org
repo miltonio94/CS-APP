@@ -1,2 +1,15 @@
 #+title: Chapter 2: Representing and manipulating information
 #+AUTHOR: Milton
+
+Unsigned encoding are based on traditional binary notation, representing numbers greater then or equal to 0. /Two's-complement/ is the most common way to represent /signed/ integers, that is numbers that may be positive or negative. /Floating-point/ numbers are a base-2 version of scientific notation for representing real numbers.
+
+Computer representation is not infinite and can only represent a finite set. Because of this some operations can cause /overflow/ when the results are too large to be represented by these encoding stated above. In a 32bit machine, the calculation ~200 * 300 * 400 * 500~ will result in -884,901,888 which does not follow the properties of integer arithmetic.
+
+Floating point arithmetic has different mathematical properties. The product of a set of positive numbers will always be positive, although in the case of overflow it will yield +\infty. Floating-point arithmetic is not associative. This is due to it's finite precision of representation. The difference between the precision between integers and floating-point arithmetic is due to how each representation handles it finiteness. Integers can represent a smaller set of numbers but do so accurately, while floating-point can represent a bigger set but do so approximately.
+
+* 2.1 Information storage
+Computers do not access individual bits in memory, rather it uses blocks of 8 bits (known as /bytes/) as the smallest unit of memory. A machine-level program sees memory as large array of bytes, this is known as /virtual memory/. Every byte in the array is identified by a unique number, this is it's /address/, and all sets of address is know as the /virtual address space/
+The virtual address space is an abstraction for the machine level program.
+
+
+* Exercises
